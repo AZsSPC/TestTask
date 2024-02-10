@@ -1,6 +1,7 @@
 package com.illiapinchuk.testtask.model.dto;
 
 import com.illiapinchuk.testtask.persistence.entity.Bid;
+import com.illiapinchuk.testtask.persistence.entity.User;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,6 @@ public class AuctionDto {
   Double startPrice;
   LocalDateTime startTime;
   LocalDateTime endTime;
+  Long creatorId;
   Set<Bid> bids;
 }

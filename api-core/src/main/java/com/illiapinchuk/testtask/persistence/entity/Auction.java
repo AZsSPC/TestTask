@@ -39,7 +39,7 @@ public class Auction {
   LocalDateTime startTime;
   LocalDateTime endTime;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "creator_id")
   User creator;
 

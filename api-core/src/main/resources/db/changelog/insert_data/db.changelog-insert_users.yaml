@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Illia Pinchuk
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: firstname
+                  value: "Admin"
+              - column:
+                  name: lastname
+                  value: "User"
+              - column:
+                  name: login
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "$2a$12$5XwRjrAcTE/Dm67wEYZJgOYFOrn0ShQrRUmljQTsvkizJRYLcGIem"
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: user_role
+                  value: "ADMIN"
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: firstname
+                  value: "Illia"
+              - column:
+                  name: lastname
+                  value: "Pinchuk"
+              - column:
+                  name: login
+                  value: "illiaPinchuk"
+              - column:
+                  name: password
+                  value: "$2a$12$5XwRjrAcTE/Dm67wEYZJgOYFOrn0ShQrRUmljQTsvkizJRYLcGIem"
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 2
+              - column:
+                  name: user_role
+                  value: "DEVELOPER"
