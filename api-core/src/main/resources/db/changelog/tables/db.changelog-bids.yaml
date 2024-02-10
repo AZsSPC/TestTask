@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: illiapinchuk
+      changes:
+        - createTable:
+            tableName: bids
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: double
+              - column:
+                  name: bid_time
+                  type: datetime
+              - column:
+                  name: auction_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bid_auction
+                    references: auctions(id)
+              - column:
+                  name: bidder_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bid_bidder
+                    references: users(id)

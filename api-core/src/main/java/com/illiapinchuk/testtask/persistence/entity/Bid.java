@@ -1,7 +1,7 @@
 package com.illiapinchuk.testtask.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 /** Bid class represents a bid in the db. */
 @Entity
-@Table(name = "auctions")
+@Table(name = "bids")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,11 +30,12 @@ public class Bid {
   Double amount;
   LocalDateTime bidTime;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonIgnore
+  @ManyToOne
   @JoinColumn(name = "auction_id")
   Auction auction;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "bidder_id")
   User bidder;
 }

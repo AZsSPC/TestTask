@@ -14,6 +14,7 @@ public class ApplicationConstants {
     @UtilityClass
     public class Path {
       public static final String LOGIN_PATH = "/auth/login";
+      public static final String SIGN_UP_PATH = "/users";
     }
 
     /** Inner utility class for constants related to security part. */
