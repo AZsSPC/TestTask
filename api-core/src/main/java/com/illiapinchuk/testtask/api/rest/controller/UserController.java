@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,17 @@ public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
+
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'DEVELOPER', 'USER')")
+  @GetMapping("/{id}")
+  public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") final Long id) {
+
+    final var user = userService.getUserById(id);
+    final var userResponse = userMapper.userToUserDto(user);
+
+    log.info("User with id: {} was found", id);
+    return ResponseEntity.ok(userResponse);
+  }
 
   /**
    * Registers a new user by creating a new {@link User} with the information provided in the
