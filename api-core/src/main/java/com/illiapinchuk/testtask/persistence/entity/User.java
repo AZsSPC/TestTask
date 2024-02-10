@@ -1,6 +1,8 @@
 package com.illiapinchuk.testtask.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.illiapinchuk.testtask.model.entity.RoleName;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -14,12 +16,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /** User class represents a user in the db. */
@@ -44,11 +48,15 @@ public class User {
 
   String password;
 
-  @OneToMany(mappedBy = "creator")
-  Set<Auction> createdAuctions;
+  @JsonIgnore
+  @ToString.Exclude
+  @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+  List<Auction> createdAuctions;
 
-  @OneToMany(mappedBy = "bidder")
-  Set<Bid> bids;
+  @JsonIgnore
+  @ToString.Exclude
+  @OneToMany(mappedBy = "bidder", cascade = CascadeType.ALL)
+  List<Bid> bids;
 
   @ElementCollection(targetClass = RoleName.class, fetch = FetchType.EAGER)
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))

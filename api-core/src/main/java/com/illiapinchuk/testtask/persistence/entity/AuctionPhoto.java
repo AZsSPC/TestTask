@@ -1,7 +1,7 @@
 package com.illiapinchuk.testtask.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +31,8 @@ public class AuctionPhoto {
 
   String url; // photo URL (path) that stores in S3
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonIgnore
+  @ManyToOne
   @JoinColumn(name = "auction_id")
   Auction auction;
 }

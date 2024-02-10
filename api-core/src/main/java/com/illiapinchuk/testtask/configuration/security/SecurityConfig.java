@@ -8,6 +8,7 @@ import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -48,7 +49,10 @@ public class SecurityConfig {
         .disable()
         .authorizeHttpRequests()
         // authenticate requests
-        .requestMatchers(new AntPathRequestMatcher(ApplicationConstants.Web.Path.LOGIN_PATH))
+        .requestMatchers(
+            new AntPathRequestMatcher(ApplicationConstants.Web.Path.LOGIN_PATH),
+            new AntPathRequestMatcher(
+                ApplicationConstants.Web.Path.SIGN_UP_PATH, HttpMethod.POST.name()))
         .permitAll()
         .anyRequest()
         .authenticated()

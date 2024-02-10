@@ -5,7 +5,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import com.illiapinchuk.testtask.exception.BidShouldBeMoreThenPreviousOne;
+import com.illiapinchuk.testtask.exception.CannotReadJsonException;
+import com.illiapinchuk.testtask.exception.CannotWriteToS3Exception;
 import com.illiapinchuk.testtask.exception.InvalidJwtTokenException;
+import com.illiapinchuk.testtask.exception.UserIsNotOwnerOfTheAuctionException;
 import com.illiapinchuk.testtask.model.entity.ApiError;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -111,7 +115,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @param ex the EntityExistsException
    * @return the ApiError object
    */
-  @ExceptionHandler(EntityExistsException.class)
+  @ExceptionHandler({EntityExistsException.class, BidShouldBeMoreThenPreviousOne.class})
   protected ResponseEntity<Object> handleEntityExists(EntityExistsException ex) {
     final var apiError = new ApiError(BAD_REQUEST);
     apiError.setMessage(ex.getMessage());
@@ -140,9 +144,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @param ex the AccessDeniedException
    * @return the ApiError object
    */
-  @ExceptionHandler({
-    AccessDeniedException.class,
-  })
+  @ExceptionHandler({AccessDeniedException.class, UserIsNotOwnerOfTheAuctionException.class})
   protected ResponseEntity<Object> handleEntityNotFound(RuntimeException ex) {
     final var apiError = new ApiError(FORBIDDEN);
     apiError.setMessage(ex.getMessage());
@@ -246,19 +248,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex));
   }
 
-  //  /**
-  //   * Exception handler for CannotWriteToS3Exception and CannotReadJsonException. Handles the
-  // runtime
-  //   * exception and returns a ResponseEntity with an appropriate error message.
-  //   *
-  //   * @param ex the runtime exception to handle
-  //   * @return a ResponseEntity containing the error message and HTTP status code
-  //   */
-  //  @ExceptionHandler({CannotWriteToS3Exception.class, CannotReadJsonException.class})
-  //  protected ResponseEntity<Object> handleCannotWriteToS3ExceptionAndCannotReadJsonException(
-  //      RuntimeException ex) {
-  //    return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex));
-  //  }
+  /**
+   * Exception handler for CannotWriteToS3Exception and CannotReadJsonException. Handles the runtime
+   * exception and returns a ResponseEntity with an appropriate error message.
+   *
+   * @param ex the runtime exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status code
+   */
+  @ExceptionHandler({CannotWriteToS3Exception.class, CannotReadJsonException.class})
+  protected ResponseEntity<Object> handleCannotWriteToS3ExceptionAndCannotReadJsonException(
+      RuntimeException ex) {
+    return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex));
+  }
 
   /**
    * Handle Exception, handle generic Exception.class

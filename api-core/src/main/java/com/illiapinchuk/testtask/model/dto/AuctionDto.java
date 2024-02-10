@@ -1,7 +1,10 @@
 package com.illiapinchuk.testtask.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.illiapinchuk.testtask.persistence.entity.AuctionPhoto;
 import com.illiapinchuk.testtask.persistence.entity.Bid;
-import com.illiapinchuk.testtask.persistence.entity.User;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -20,12 +23,21 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AuctionDto {
 
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   Long id;
-  String title;
-  String description;
-  Double startPrice;
+
+  @NotBlank String title;
+  @NotBlank String description;
+  @NotNull Double startPrice;
   LocalDateTime startTime;
   LocalDateTime endTime;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   Long creatorId;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   Set<Bid> bids;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  Set<AuctionPhoto> photos;
 }

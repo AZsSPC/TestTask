@@ -7,6 +7,7 @@ spring:
     jpa:
       hibernate:
         ddl-auto: none  # Hibernate DDL auto-generation mode
+        show-sql: true  # Show SQL queries in the console
     h2:
       console:
         enabled: true  # Enable H2 console for database administration
@@ -38,6 +39,12 @@ spring:
 server:
   servlet:
     context-path: /api  # Configuring the server servlet context path (add "/api" to all endpoints)
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
 
 # Basic Authentication Credentials
 basic:
