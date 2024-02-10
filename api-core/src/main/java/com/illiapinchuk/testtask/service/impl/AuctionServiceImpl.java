@@ -12,6 +12,8 @@ import com.illiapinchuk.testtask.service.AuctionService;
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,14 @@ public class AuctionServiceImpl implements AuctionService {
 
   private final AuctionValidator auctionValidator;
   private final AuctionMapper auctionMapper;
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<AuctionDto> getAllAuctions(int page, int size) {
+    final var pageable = PageRequest.of(page, size);
+
+    return auctionRepository.findAll(pageable).map(auctionMapper::auctionToAuctionDto);
+  }
 
   @Override
   @Transactional(readOnly = true)
