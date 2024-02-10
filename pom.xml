@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.illiapinchuk</groupId>
+    <artifactId>root</artifactId>
+    <version>0.0.1</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>api-core</module>
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <checkstyle.version>3.1.1</checkstyle.version>
+        <pmd.version>3.21.0</pmd.version>
+        <spotbugs.version>4.7.3.4</spotbugs.version>
+        <surefire.version>3.0.0-M5</surefire.version>
+        <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+        <checkstyle.latest.version>10.12.0</checkstyle.latest.version>
+        <checkstyle.file.path>config/checkstyle/google_checks.xml</checkstyle.file.path>
+        <maven.checkstyle.plugin.version>3.3.0</maven.checkstyle.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <forkedProcessExitTimeoutInSeconds>60</forkedProcessExitTimeoutInSeconds>
+                    <forkCount>1</forkCount>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.latest.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>${checkstyle.file.path}</configLocation>
+                    <failOnViolation>false</failOnViolation>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd.version}</version>
+                <configuration>
+                    <failurePriority>2</failurePriority>
+                    <printFailingErrors>true</printFailingErrors>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <excludeFromFailureFile>config/pmd/exclude-pmd.xml</excludeFromFailureFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.version}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <maxRank>11</maxRank>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
+                <configuration>
+                    <configLocation>config/checkstyle/google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <failsOnError>false</failsOnError>
+                    <violationSeverity>warning</violationSeverity>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd.version}</version>
+                <configuration>
+                    <rulesets>
+                        <ruleset>config/pmd/exclude-pmd.xml</ruleset>
+                    </rulesets>
+                    <minimumTokens>100</minimumTokens>
+                    <targetJdk>${java.version}</targetJdk>
+                    <excludes>
+                        <exclude>**/*Bean.java</exclude>
+                        <exclude>**/generated/*.java</exclude>
+                    </excludes>
+                    <excludeRoots>
+                        <excludeRoot>target/generated-sources/stubs</excludeRoot>
+                    </excludeRoots>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.version}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <maxRank>11</maxRank>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </reporting>
+
+</project>
