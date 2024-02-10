@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,7 @@ public class AuctionController {
     return ResponseEntity.status(HttpStatus.CREATED).body(auctionResponse);
   }
 
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'DEVELOPER')")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'DEVELOPER', 'USER')")
   @PutMapping
   public ResponseEntity<AuctionDto> updateAuction(@Valid @RequestBody final AuctionDto auctionDto) {
     final var auction = auctionService.updateAuction(auctionDto);
@@ -60,5 +61,13 @@ public class AuctionController {
 
     log.info("Auction with id: {} was updated", auction.getId());
     return ResponseEntity.ok().body(auctionResponse);
+  }
+
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'DEVELOPER', 'USER')")
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteAuctionById(@PathVariable("id") final Long auctionId) {
+    auctionService.deleteAuctionById(auctionId);
+    log.info("Auction with id: {} was deleted", auctionId);
+    return ResponseEntity.ok().build();
   }
 }

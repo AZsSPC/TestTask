@@ -26,9 +26,7 @@
 		<jackson.databind.version>2.12.4</jackson.databind.version>
 		<mockito.inline.version>3.12.4</mockito.inline.version>
 		<postgres.version>42.6.0</postgres.version>
-		<embedded.mongo.version>4.7.0</embedded.mongo.version>
 		<spring-boot-dependencies>3.0.9</spring-boot-dependencies>
-		<spring.websocket.version>5.2.2.RELEASE</spring.websocket.version>
 	</properties>
 
 	<dependencyManagement>
@@ -64,10 +62,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -81,10 +75,10 @@
 			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-websocket</artifactId>
-			<version>${spring.websocket.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
 
 
 		<!--  Lombok  -->
@@ -132,10 +126,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -200,12 +190,6 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-inline</artifactId>
 			<version>${mockito.inline.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
-			<version>${embedded.mongo.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

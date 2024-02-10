@@ -4,6 +4,7 @@ import com.illiapinchuk.testtask.common.mapper.AuctionMapper;
 import com.illiapinchuk.testtask.common.validator.AuctionValidator;
 import com.illiapinchuk.testtask.exception.AuctionAlreadyExistsException;
 import com.illiapinchuk.testtask.exception.AuctionNotFoundException;
+import com.illiapinchuk.testtask.exception.UserIsNotOwnerOfTheAuctionException;
 import com.illiapinchuk.testtask.model.dto.AuctionDto;
 import com.illiapinchuk.testtask.persistence.entity.Auction;
 import com.illiapinchuk.testtask.persistence.repository.AuctionRepository;
@@ -48,10 +49,12 @@ public class AuctionServiceImpl implements AuctionService {
   @Transactional(rollbackFor = Exception.class)
   public Auction updateAuction(@Nonnull final AuctionDto auctionDto) {
     final var auctionId = auctionDto.getId();
-    if (!auctionValidator.isAuctionExistsInDbById(auctionId)) {
-      throw new AuctionNotFoundException(String.format("Auction with id: %s not found", auctionId));
-    }
+
+    checkIfAuctionExists(auctionId);
+    checkIfUserCreatedAuction(auctionId, auctionDto.getCreatorId());
+
     final var auction = getAuctionById(auctionId);
+
     auctionMapper.updateAuction(auction, auctionDto);
 
     return auctionRepository.save(auction);
@@ -60,5 +63,19 @@ public class AuctionServiceImpl implements AuctionService {
   @Override
   public void deleteAuctionById(@Nonnull final Long id) {
     auctionRepository.deleteById(id);
+  }
+
+  private void checkIfAuctionExists(Long auctionId) {
+    if (!auctionValidator.isAuctionExistsInDbById(auctionId)) {
+      throw new AuctionNotFoundException(String.format("Auction with id: %s not found", auctionId));
+    }
+  }
+
+  private void checkIfUserCreatedAuction(Long auctionId, Long creatorId) {
+    if (!auctionValidator.isUserCreatedAuction(auctionId, creatorId)) {
+      throw new UserIsNotOwnerOfTheAuctionException(
+          String.format(
+              "User with id: %s did not create the auction with id: %s", creatorId, auctionId));
+    }
   }
 }

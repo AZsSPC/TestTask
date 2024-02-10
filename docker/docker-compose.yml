@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"            # LocalStack endpoint
+    #      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      - SERVICES=s3
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ./localstack-script:/etc/localstack/init/ready.d
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=illiapinchuk
+      - POSTGRES_PASSWORD=moodle_password
+      - POSTGRES_DB=moodle_postgresDB
+    ports:
+      - "5432:5432"

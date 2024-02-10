@@ -3,6 +3,7 @@ package com.illiapinchuk.testtask.common.mapper;
 import com.illiapinchuk.testtask.model.dto.AuctionDto;
 import com.illiapinchuk.testtask.persistence.entity.Auction;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 /**
  * This interface defines methods for mapping between the {@link Auction} and {@link AuctionDto}.
@@ -32,5 +33,5 @@ public interface AuctionMapper {
    * @param auction The Auction object to be updated.
    * @param auctionDto The source of the updated data.
    */
-  void updateAuction(Auction auction, AuctionDto auctionDto);
+  void updateAuction(@MappingTarget Auction auction, AuctionDto auctionDto);
 }

@@ -1,1 +1,46 @@
+spring:
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moodle_postgresDB # JDBC URL for docker database
+    username: illiapinchuk  # Database username
+    password: moodle_password  # Database password
+    jpa:
+      hibernate:
+        ddl-auto: none  # Hibernate DDL auto-generation mode
+    h2:
+      console:
+        enabled: true  # Enable H2 console for database administration
 
+  # Security Configuration
+  security:
+    secret: testTask_secret_key_for_user_authentication  # Secret key for JWT token signing
+    expirationTime: 36000000  # JWT token validity time in milliseconds
+
+  # Liquibase Configuration
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml  # Liquibase changelog file location
+
+  # AWS Configuration
+  cloud:
+    aws:
+      s3:
+        endpoint: http://s3.localhost.localstack.cloud:4566  # AWS S3 endpoint
+        region: eu-central-1  # AWS S3 region
+        bucket-name: s3://s3-image-bucket/  # Name of the S3 bucket
+        bucket-url: http://s3-image-bucket.s3.localhost.localstack.cloud:4566  # URL of the S3 bucket
+      credentials:
+        access-key: none  # AWS access key
+        secret-key: none  # AWS secret key
+      region:
+        static: eu-central-1  # AWS region
+
+# Server Configuration
+server:
+  servlet:
+    context-path: /api  # Configuring the server servlet context path (add "/api" to all endpoints)
+
+# Basic Authentication Credentials
+basic:
+  name: developer  # Basic authentication username
+  password: 123456  # Basic authentication password
+  role: DEVELOPER  # Role for basic authentication
